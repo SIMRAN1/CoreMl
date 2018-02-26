@@ -31,6 +31,7 @@
 import UIKit
 import CoreML
 import Vision
+import AVFoundation
 class ViewController: UIViewController {
 
   // MARK: - IBOutlets
@@ -87,6 +88,7 @@ extension ViewController {
       let article = (self?.vowels.contains(topResult.identifier.first!))! ? "an" : "a"
       DispatchQueue.main.async { [weak self] in
         self?.answerLabel.text = "\(Int(topResult.confidence * 100))% it's \(article) \(topResult.identifier)"
+        TexttoSpeech(text: (self?.answerLabel.text!)!)
       }
     }
     let handler = VNImageRequestHandler(ciImage: image)
@@ -98,6 +100,13 @@ extension ViewController {
       }
     }
   }
+}
+func TexttoSpeech(text:String)
+{
+  let synth = AVSpeechSynthesizer()
+  var myUtterance = AVSpeechUtterance(string: text )
+  synth.speak(myUtterance)
+  
 }
 
 // MARK: - UIImagePickerControllerDelegate
